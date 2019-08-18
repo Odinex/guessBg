@@ -1,0 +1,86 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CDFCD5"
+    tools:context="com.kp.guessbg.activities.MenuActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:text="@string/dummy_content"
+        android:textColor="#33b5e5"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/menu_layout"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/new_game"
+                style="?android:button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/new_game"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textColor="#004040"
+                android:onClick="startNewGameActivity"/>
+            <Button
+                android:id="@+id/continue_game"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/continue_game"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textColor="#004040"
+                android:onClick="startContinueGameActivity"/>
+            <Button
+                android:id="@+id/help_rules"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/help_rules"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textColor="#004040"
+                android:onClick="startHelpAndRulesActivity"/>
+            <Button
+                android:id="@+id/settings"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/settings"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textColor="#004040"
+                android:onClick="startSettingsActivity"/>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>
