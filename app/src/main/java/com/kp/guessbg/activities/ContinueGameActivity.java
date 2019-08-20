@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.kp.guessbg.R;
 
@@ -51,7 +52,6 @@ public class ContinueGameActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    private View mControlsView;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -60,7 +60,6 @@ public class ContinueGameActivity extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.show();
             }
-            mControlsView.setVisibility(View.VISIBLE);
         }
     };
     private boolean mVisible;
@@ -92,7 +91,7 @@ public class ContinueGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_continue_game);
 
         mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
+
         mContentView = findViewById(R.id.fullscreen_content);
 
 
@@ -134,9 +133,10 @@ public class ContinueGameActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
-        mVisible = false;
 
+        mVisible = false;
+        ImageButton expand = findViewById(R.id.expand);
+        expand.setVisibility(View.INVISIBLE);
         // Schedule a runnable to remove the status and navigation bar after a delay
         mHideHandler.removeCallbacks(mShowPart2Runnable);
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
@@ -152,6 +152,8 @@ public class ContinueGameActivity extends AppCompatActivity {
         // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable);
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+        ImageButton expand = findViewById(R.id.expand);
+        expand.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -162,4 +164,9 @@ public class ContinueGameActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+    public void expand(View view) {
+        hide();
+    }
+
 }

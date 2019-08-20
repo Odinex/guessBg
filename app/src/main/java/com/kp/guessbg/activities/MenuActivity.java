@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.kp.guessbg.R;
 
@@ -61,7 +62,6 @@ public class MenuActivity extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.show();
             }
-
         }
     };
     private boolean mVisible;
@@ -137,7 +137,8 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         mVisible = false;
-
+        ImageButton expand = findViewById(R.id.expand);
+        expand.setVisibility(View.INVISIBLE);
         // Schedule a runnable to remove the status and navigation bar after a delay
         mHideHandler.removeCallbacks(mShowPart2Runnable);
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
@@ -153,6 +154,8 @@ public class MenuActivity extends AppCompatActivity {
         // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable);
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+        ImageButton expand = findViewById(R.id.expand);
+        expand.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -182,5 +185,9 @@ public class MenuActivity extends AppCompatActivity {
     public void startSettingsActivity(View view) {
         Intent in=new Intent(MenuActivity.this,SettingsActivity.class);
         startActivity(in);
+    }
+
+    public void expand(View view) {
+        hide();
     }
 }

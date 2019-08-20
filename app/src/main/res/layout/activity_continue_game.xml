@@ -45,6 +45,28 @@
                 android:text="@string/dummy_button" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            style="?metaButtonBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+            <ImageButton
+                android:id="@+id/expand"
+                style="?android:button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/expand"
+                android:onClick="expand"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="10dp"
+                tools:ignore="RtlHardcoded"
+                android:layout_marginRight="10dp"/>
+
+        </LinearLayout>
     </FrameLayout>
 
 </FrameLayout>
