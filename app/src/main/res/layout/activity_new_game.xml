@@ -14,92 +14,109 @@
         android:textStyle="bold" />
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
 
-            <TextView
-                android:id="@+id/enter_number_teams"
+            <LinearLayout
+                android:id="@+id/fullscreen_content_controls"
+                style="?metaButtonBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/pleaseEnterNumber"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="#004040"
-                android:layout_margin="3dp"/>
+                android:layout_gravity="top|center_horizontal"
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
 
-            <SeekBar
-                android:id="@+id/seekBarTeams"
-                style="@style/Widget.AppCompat.SeekBar.Discrete"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:max="10"
-                android:progress="3"
-                android:layout_margin="10dp"
-                />
+                <TextView
+                    android:id="@+id/enter_number_teams"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/pleaseEnterNumber"
+                    android:textAlignment="center"
+                    android:textColor="#004040"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/chosenNumberOfTeams"
-                android:layout_width="match_parent"
+                <SeekBar
+                    android:id="@+id/seekBarTeams"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:max="10"
+                    android:progress="3" />
+
+                <TextView
+                    android:id="@+id/chosenNumberOfTeams"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textAlignment="center"
+                    android:textColor="#004040"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:id="@+id/dynamic-input-fields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/start_game"
+                    style="?android:button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_weight="1"
+                    android:onClick="startGameActivity"
+                    android:text="@string/start_game"
+                    android:textAlignment="center"
+                    android:textColor="#084848"
+                    android:textSize="20sp"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/bottom_layout"
+                style="?metaButtonBarStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="#004040"
-                android:layout_margin="3dp"/>
+                android:layout_gravity="bottom|start"
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
 
-            <Button
-                android:id="@+id/start_game"
-                style="?android:button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/start_game"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="#084848"
-                android:onClick="startGameActivity"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="10dp"
-                tools:ignore="RtlHardcoded"
-                android:layout_marginRight="10dp"/>
+                <ImageButton
+                    android:id="@+id/expand"
+                    style="?android:button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/expand"
+                    android:onClick="expand"
+                    tools:ignore="RtlHardcoded" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/bottom_layout"
-            style="?metaButtonBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
-        <ImageButton
-            android:id="@+id/expand"
-            style="?android:button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/expand"
-            android:onClick="expand"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
-            tools:ignore="RtlHardcoded"
-            android:layout_marginRight="10dp"/>
+            </LinearLayout>
 
-        </LinearLayout>
-
-    </FrameLayout>
+        </FrameLayout>
+    </ScrollView>
 
 </FrameLayout>

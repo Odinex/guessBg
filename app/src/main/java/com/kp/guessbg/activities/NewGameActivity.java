@@ -8,11 +8,16 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.kp.guessbg.R;
+import com.kp.guessbg.models.Team;
+
+import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -112,6 +117,7 @@ public class NewGameActivity extends AppCompatActivity {
         });
         chosenNumberOfTeams = findViewById(R.id.chosenNumberOfTeams);
         chosenNumberOfTeams.setText("3");
+        addInputsElements(Integer.valueOf(chosenNumberOfTeams.getText().toString()));
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
@@ -121,6 +127,7 @@ public class NewGameActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 chosenNumberOfTeams.setText(String.valueOf(i));
+                addInputsElements(i);
             }
 
             @Override
@@ -133,6 +140,26 @@ public class NewGameActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void addInputsElements(Integer numberOfFields) {
+        LinearLayout dynamic = findViewById(R.id.dynamic_input_fields);
+        if(dynamic.getChildCount() > 0) {
+            dynamic.removeAllViews();
+        }
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        for(int i = 0; i < numberOfFields; i++) {
+            TextView textView = new TextView(this);
+            textView.setLayoutParams(lp);
+            textView.setText(String.format("Име на отбор №%d", i));
+            dynamic.addView(textView);
+            EditText editText = new EditText(this);
+            editText.setLayoutParams(lp);
+            editText.setText(String.format("Отбор %d", i + 1));
+            dynamic.addView(editText);
+        }
+
     }
 
     @Override
@@ -192,6 +219,16 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void startGameActivity(View view) {
+        LinearLayout dynamic = findViewById(R.id.dynamic_input_fields);
+        final int childCount = dynamic.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View v = dynamic.getChildAt(i);
+            if(v instanceof EditText) {
+                EditText editText = (EditText) v;
+                Team team = new Team(i,editText.getText().toString());
+
+            }
+        }
     }
 
     public void expand(View view) {
