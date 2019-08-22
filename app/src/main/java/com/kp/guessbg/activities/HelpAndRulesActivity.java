@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.kp.guessbg.R;
 
@@ -34,7 +35,7 @@ public class HelpAndRulesActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
+    private TextView mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -92,7 +93,15 @@ public class HelpAndRulesActivity extends AppCompatActivity {
 
         mVisible = true;
         mContentView = findViewById(R.id.fullscreen_content);
-
+        mContentView.setText("\tИграта е мобилна версия на настолната игра Activity със думи, които са специализирани в българската култура.\n" +
+                "\n" +
+                "\tИграчите се разпределят на групи от поне 2 човека. Всеки рунд се избира дейност на случаен принцип.\n" +
+                "Дейността се определя от изтеглената случайна дума и начин за описване на нея. Един играч от даден отбор \n" +
+                "трябва да опише думата само чрез говор, без използване на сродни думи или само чрез мимики или само чрез\n" +
+                "рисуване без използване на знаци.\n" +
+                "\tСъотборниците трябва да познаят думата в рамките на една минута, засичането \n" +
+                "на която се използва таймер.\n" +
+                "\tОтборът, който успее да достигне пръв 10 точки, печели.");
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
