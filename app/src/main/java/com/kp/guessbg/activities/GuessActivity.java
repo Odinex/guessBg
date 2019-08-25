@@ -1,37 +1,31 @@
 package com.kp.guessbg.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.TransitionManager;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.kp.guessbg.R;
-import com.kp.guessbg.models.Team;
-import com.kp.guessbg.services.TeamService;
-
-import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class NewGameActivity extends AppCompatActivity {
+public class GuessActivity extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
     private static final boolean AUTO_HIDE = true;
-    private TeamService teamService;
 
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
@@ -94,21 +88,20 @@ public class NewGameActivity extends AppCompatActivity {
             return false;
         }
     };
-    private SeekBar seekBarTeams;
-    private TextView chosenNumberOfTeams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_new_game);
+        setContentView(R.layout.activity_guess);
 
         mVisible = true;
+
         ImageButton expand = findViewById(R.id.expand);
         expand.setVisibility(View.INVISIBLE);
 
         mContentView = findViewById(R.id.fullscreen_content);
-        teamService = new TeamService();
+
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
@@ -117,51 +110,10 @@ public class NewGameActivity extends AppCompatActivity {
                 toggle();
             }
         });
-        chosenNumberOfTeams = findViewById(R.id.chosenNumberOfTeams);
-        chosenNumberOfTeams.setText("3");
-        addInputsElements(Integer.valueOf(chosenNumberOfTeams.getText().toString()));
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        seekBarTeams = findViewById(R.id.seekBarTeams);
-        seekBarTeams.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                chosenNumberOfTeams.setText(String.valueOf(i));
-                addInputsElements(i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-    }
-
-    private void addInputsElements(Integer numberOfFields) {
-        LinearLayout dynamic = findViewById(R.id.dynamic_input_fields);
-        if(dynamic.getChildCount() > 0) {
-            dynamic.removeAllViews();
-        }
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        for(int i = 0; i < numberOfFields; i++) {
-            TextView textView = new TextView(this);
-            textView.setLayoutParams(lp);
-            textView.setText(String.format("Име на отбор №%d", i));
-            dynamic.addView(textView);
-            EditText editText = new EditText(this);
-            editText.setLayoutParams(lp);
-            editText.setText(String.format("Отбор %d", i + 1));
-            dynamic.addView(editText);
-        }
-
     }
 
     @Override
@@ -188,7 +140,6 @@ public class NewGameActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-
         mVisible = false;
         ImageButton expand = findViewById(R.id.expand);
         expand.setVisibility(View.INVISIBLE);
@@ -220,22 +171,18 @@ public class NewGameActivity extends AppCompatActivity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    public void startGameActivity(View view) {
-        LinearLayout dynamic = findViewById(R.id.dynamic_input_fields);
-        final int childCount = dynamic.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View v = dynamic.getChildAt(i);
-            if(v instanceof EditText) {
-                EditText editText = (EditText) v;
-                Team team = new Team(i,editText.getText().toString());
-                teamService.addTeam(team);
-            }
-        }
-        Intent in=new Intent(NewGameActivity.this,GuessActivity.class);
-        startActivity(in);
-    }
-
     public void expand(View view) {
         hide();
+    }
+
+    public void startTimerAndHideWord(View view) {
+        final ViewGroup transitionsContainer = (ViewGroup) findViewById(R.id.fullscreen_content_controls);
+        final TextView text = (TextView) transitionsContainer.findViewById(R.id.text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(transitionsContainer);
+        }
+        boolean visible = text.getVisibility() == View.VISIBLE;
+        visible = !visible;
+        text.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

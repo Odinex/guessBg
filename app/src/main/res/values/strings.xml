@@ -19,4 +19,6 @@
     <string name="start_game">Започнете игра</string>
     <string name="dummy_content">asd</string>
     <string name="dummy_button">asd</string>
+
+    <string name="title_activity_guess">GuessActivity</string>
 </resources>

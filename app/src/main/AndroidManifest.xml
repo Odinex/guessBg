@@ -39,6 +39,11 @@
             android:name=".activities.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_settings"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".activities.GuessActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_guess"
             android:theme="@style/FullscreenTheme"></activity>
     </application>
 
