@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.kp.guessbg.R;
+import com.kp.guessbg.services.TeamService;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -40,6 +41,7 @@ public class GuessActivity extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
+    private TeamService teamService;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -99,6 +101,7 @@ public class GuessActivity extends AppCompatActivity {
 
         ImageButton expand = findViewById(R.id.expand);
         expand.setVisibility(View.INVISIBLE);
+        teamService = new TeamService();
 
         mContentView = findViewById(R.id.fullscreen_content);
 

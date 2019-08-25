@@ -9,14 +9,12 @@ public class Team {
     private String name;
     private int points;
     private int wins;
-    private int losses;
 
     public Team(int id, String name) {
         this.id = id;
         this.name = name;
         this.points = 0;
         this.wins = 0;
-        this.losses = 0;
     }
     public Team(String teamToString) {
         int idStart = teamToString.indexOf("id=") + 3;
@@ -34,7 +32,7 @@ public class Team {
         this.wins = Integer.parseInt(teamToString.substring(beginWins, endWins));
         int beginLosses = endWins + 9;
         int endLosses = teamToString.indexOf("}", beginLosses);
-        this.losses = Integer.parseInt(teamToString.substring(beginLosses, endLosses));
+
     }
 
     @Override
@@ -44,7 +42,6 @@ public class Team {
                 ", name='" + name + '\'' +
                 ", points=" + points +
                 ", wins=" + wins +
-                ", losses=" + losses +
                 '}';
     }
 
@@ -79,15 +76,4 @@ public class Team {
     public void setWins(int wins) {
         this.wins = wins;
     }
-
-    public int getLosses() {
-        return losses;
-    }
-
-    public void setLosses(int losses) {
-        this.losses = losses;
-    }
-
-
-
 }

@@ -11,22 +11,36 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by KO on 22-Aug-19.
  */
 
 public class TeamService {
-    private Set<Team> currentTeams;
+    private static List<Team> currentTeams = new ArrayList<>();
 
     public TeamService() {
-        currentTeams = new HashSet<>();
+
     }
 
-    public Set<Team> getCurrentTeams() {
+    public List<Team> getCurrentTeams() {
         return currentTeams;
+    }
+
+    public int getCountOfTeams() {
+        return currentTeams.size();
+    }
+
+    public void updatePoints(int index, int points) {
+        Team team = currentTeams.get(index);
+        team.setPoints(team.getPoints()+points);
+    }
+
+    public void addWin(int index) {
+        Team team = currentTeams.get(index);
+        team.setWins(team.getWins()+1);
     }
 
     public void addTeam(Team team) {
