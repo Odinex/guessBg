@@ -2,6 +2,7 @@ package com.kp.guessbg.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.kp.guessbg.R;
+import com.kp.guessbg.models.ActivityEnum;
+import com.kp.guessbg.models.Guess;
+import com.kp.guessbg.services.GuessService;
 import com.kp.guessbg.services.TeamService;
 
 /**
@@ -39,6 +43,7 @@ public class GuessActivity extends AppCompatActivity {
      * and a change of the status and navigation bar.
      */
     private static final int UI_ANIMATION_DELAY = 300;
+    public static final long MINUTE = 60000L;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private TeamService teamService;
@@ -90,18 +95,48 @@ public class GuessActivity extends AppCompatActivity {
             return false;
         }
     };
+    private GuessService guessService;
+    private Guess currentGuess;
+    private CountDownTimer countDownTimer;
+    public long millisLeft = MINUTE;
+    private boolean isPaused = true;
+    private TextView timerTextField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_guess);
-
+        timerTextField = findViewById(R.id.timerTextField) ;
         mVisible = true;
-
         ImageButton expand = findViewById(R.id.expand);
         expand.setVisibility(View.INVISIBLE);
         teamService = new TeamService();
+        guessService = new GuessService(this);
+        currentGuess = guessService.getRandomGuess();
+        TextView guess = findViewById(R.id.word);
+        String activity = getActivity(currentGuess.getActivity());
+        String word = getWord(currentGuess.getWord());
+        guess.setText(String.format("%s: \"%s\"", activity, word));
+
+        countDownTimer = new CountDownTimer(60000, 1000) {
+
+
+
+            @SuppressLint("DefaultLocale")
+            public void onTick(long millisUntilFinished) {
+                millisLeft = millisUntilFinished;
+                timerTextField.setText(String.format("Оставащо време: %d", millisUntilFinished / 1000));
+                //here you can have your logic to set text to edittext
+            }
+
+            public void onFinish() {
+                Button startStopTimer = findViewById(R.id.startStopTimer);
+                startStopTimer.setVisibility(View.INVISIBLE);
+                timerTextField.setText("Спри!");
+            }
+
+        };
 
         mContentView = findViewById(R.id.fullscreen_content);
 
@@ -117,6 +152,23 @@ public class GuessActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
+    }
+
+    private String getWord(String word) {
+        if(word != null) {
+            return word;
+        } else {
+            return "Хоро";
+        }
+    }
+
+    private String getActivity(Integer activity) {
+        ActivityEnum activityEnum = ActivityEnum.valueOf(activity);
+        if(activityEnum != null) {
+            return activityEnum.getValue();
+        } else {
+            return ActivityEnum.DRAW.getValue();
+        }
     }
 
     @Override
@@ -180,12 +232,48 @@ public class GuessActivity extends AppCompatActivity {
 
     public void startTimerAndHideWord(View view) {
         final ViewGroup transitionsContainer = (ViewGroup) findViewById(R.id.fullscreen_content_controls);
-        final TextView text = (TextView) transitionsContainer.findViewById(R.id.text);
+        final TextView word = (TextView) transitionsContainer.findViewById(R.id.word);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(transitionsContainer);
         }
-        boolean visible = text.getVisibility() == View.VISIBLE;
+        boolean visible = word.getVisibility() == View.VISIBLE;
+        Button button = (Button) view;
         visible = !visible;
-        text.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if(visible) {
+            button.setText("Покажи");
+        } else {
+            button.setText("Скрий");
+        }
+        word.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void startStopTimer(View view) {
+        if(isPaused) {
+            if (MINUTE != millisLeft) {
+                countDownTimer = new CountDownTimer(millisLeft, 1000) {
+                    @SuppressLint("DefaultLocale")
+                    public void onTick(long millisUntilFinished) {
+                        millisLeft = millisUntilFinished;
+                        timerTextField.setText(String.format("Оставащо време: %d", millisUntilFinished / 1000));
+                        //here you can have your logic to set text to edittext
+                    }
+
+                    public void onFinish() {
+                        Button startStopTimer = findViewById(R.id.startStopTimer);
+                        startStopTimer.setVisibility(View.INVISIBLE);
+                        timerTextField.setText("Спри!");
+                    }
+                };
+            }
+            countDownTimer.start();
+            isPaused = false;
+            Button startStopTimer = findViewById(R.id.startStopTimer);
+            startStopTimer.setText("Спри");
+        } else {
+            Button startStopTimer = findViewById(R.id.startStopTimer);
+            startStopTimer.setText("Продължи");
+            countDownTimer.cancel();
+            isPaused = true;
+        }
     }
 }

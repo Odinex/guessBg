@@ -28,27 +28,45 @@
         <LinearLayout
             android:id="@+id/fullscreen_content_controls"
             style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:background="@color/black_overlay"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             tools:ignore="UselessParent">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/showHideWords"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="startTimerAndHideWord"
-                android:text="DO MAGIC"/>
+                android:text="Покажи"/>
 
             <TextView
-                android:id="@+id/text"
+                android:id="@+id/word"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Transitions are awesome!"
-                android:visibility="gone"/>
+                android:textSize="30sp"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/startStopTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="startStopTimer"
+                android:text="Начало"/>
+
+            <TextView
+                android:id="@+id/timerTextField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="30sp"
+                android:text="Оставащо време: 60"
+                android:visibility="visible"/>
 
 
         </LinearLayout>

@@ -33,6 +33,14 @@ public class Guess {
         this.id = id;
     }
 
+    public Integer getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Integer activity) {
+        this.activity = activity;
+    }
+
     public String getWord() {
         return word;
     }

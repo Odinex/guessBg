@@ -5,7 +5,18 @@ package com.kp.guessbg.models;
  */
 
 public enum  ActivityEnum {
-    SPEAK,DRAW,GESTURE;
+    SPEAK("Опиши"),DRAW("Нарисувай"),GESTURE("С мимики");
+
+    private final String value;
+
+    ActivityEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
     public static ActivityEnum valueOf(int i) {
         switch (i) {
             case 0: return SPEAK;
