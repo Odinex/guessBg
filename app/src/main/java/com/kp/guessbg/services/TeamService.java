@@ -32,6 +32,10 @@ public class TeamService {
     public int getCountOfTeams() {
         return currentTeams.size();
     }
+    public void setAsCurrentGuesser(int index) {
+        Team team = currentTeams.get(index);
+        team.setIsHisTurn(true);
+    }
 
     public void updatePoints(int index, int points) {
         Team team = currentTeams.get(index);

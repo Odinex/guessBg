@@ -36,6 +36,14 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
+            <TextView
+                android:id="@+id/teamDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="30sp"
+                android:visibility="visible"/>
+
             <Button
                 android:id="@+id/showHideWords"
                 android:layout_width="wrap_content"

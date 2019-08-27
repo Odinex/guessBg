@@ -9,12 +9,14 @@ public class Team {
     private String name;
     private int points;
     private int wins;
+    private boolean isHisTurn;
 
     public Team(int id, String name) {
         this.id = id;
         this.name = name;
         this.points = 0;
         this.wins = 0;
+        this.setIsHisTurn(false);
     }
     public Team(String teamToString) {
         int idStart = teamToString.indexOf("id=") + 3;
@@ -75,5 +77,17 @@ public class Team {
 
     public void setWins(int wins) {
         this.wins = wins;
+    }
+
+    public void setIsHisTurn(boolean isHisTurn) {
+        this.isHisTurn = isHisTurn;
+    }
+
+    public boolean isHisTurn() {
+        return isHisTurn;
+    }
+
+    public void setHisTurn(boolean isHisTurn) {
+        this.isHisTurn = isHisTurn;
     }
 }

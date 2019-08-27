@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.kp.guessbg.R;
 import com.kp.guessbg.models.ActivityEnum;
 import com.kp.guessbg.models.Guess;
+import com.kp.guessbg.models.Team;
 import com.kp.guessbg.services.GuessService;
 import com.kp.guessbg.services.TeamService;
 
@@ -101,7 +102,9 @@ public class GuessActivity extends AppCompatActivity {
     public long millisLeft = MINUTE;
     private boolean isPaused = true;
     private TextView timerTextField;
+    private int currentIndex;
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +115,11 @@ public class GuessActivity extends AppCompatActivity {
         ImageButton expand = findViewById(R.id.expand);
         expand.setVisibility(View.INVISIBLE);
         teamService = new TeamService();
+        currentIndex = 0;
+        Team team = teamService.getCurrentTeams().get(currentIndex);
+        teamService.setAsCurrentGuesser(currentIndex);
+        TextView teamDetails = findViewById(R.id.teamDetails);
+        teamDetails.setText(String.format("Oтбор: \"%s\", №%d е на ред.", team.getName(), team.getId()));
         guessService = new GuessService(this);
         currentGuess = guessService.getRandomGuess();
         TextView guess = findViewById(R.id.word);
