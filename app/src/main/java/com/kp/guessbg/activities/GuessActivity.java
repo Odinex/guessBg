@@ -1,6 +1,8 @@
 package com.kp.guessbg.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
@@ -8,11 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.TransitionManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.kp.guessbg.R;
@@ -47,7 +53,6 @@ public class GuessActivity extends AppCompatActivity {
     public static final long MINUTE = 60000L;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
-    private TeamService teamService;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -114,18 +119,10 @@ public class GuessActivity extends AppCompatActivity {
         mVisible = true;
         ImageButton expand = findViewById(R.id.expand);
         expand.setVisibility(View.INVISIBLE);
-        teamService = new TeamService();
-        currentIndex = 0;
-        Team team = teamService.getCurrentTeams().get(currentIndex);
-        teamService.setAsCurrentGuesser(currentIndex);
-        TextView teamDetails = findViewById(R.id.teamDetails);
-        teamDetails.setText(String.format("Oтбор: \"%s\", №%d е на ред.", team.getName(), team.getId()));
         guessService = new GuessService(this);
-        currentGuess = guessService.getRandomGuess();
-        TextView guess = findViewById(R.id.word);
-        String activity = getActivity(currentGuess.getActivity());
-        String word = getWord(currentGuess.getWord());
-        guess.setText(String.format("%s: \"%s\"", activity, word));
+        Team team = TeamService.getCurrentTeam();
+
+        resetTextFields(team);
 
         countDownTimer = new CountDownTimer(60000, 1000) {
 
@@ -160,6 +157,17 @@ public class GuessActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
+    }
+
+    private void resetTextFields(Team team) {
+        TextView teamDetails = findViewById(R.id.teamDetails);
+        teamDetails.setText(String.format("Oтбор: \"%s\", №%d е на ред.", team.getName(), team.getId()));
+
+        currentGuess = guessService.getRandomGuess();
+        TextView guess = findViewById(R.id.word);
+        String activity = getActivity(currentGuess.getActivity());
+        String word = getWord(currentGuess.getWord());
+        guess.setText(String.format("%s: \"%s\"", activity, word));
     }
 
     private String getWord(String word) {
@@ -239,8 +247,8 @@ public class GuessActivity extends AppCompatActivity {
     }
 
     public void startTimerAndHideWord(View view) {
-        final ViewGroup transitionsContainer = (ViewGroup) findViewById(R.id.fullscreen_content_controls);
-        final TextView word = (TextView) transitionsContainer.findViewById(R.id.word);
+        final ViewGroup transitionsContainer = findViewById(R.id.fullscreen_content_controls);
+        final TextView word = transitionsContainer.findViewById(R.id.word);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(transitionsContainer);
         }
@@ -283,5 +291,64 @@ public class GuessActivity extends AppCompatActivity {
             countDownTimer.cancel();
             isPaused = true;
         }
+    }
+
+    public void onGuessed(View view) {
+        // TODO complicate points and guess
+
+        if(TeamService.hasWon(currentIndex, 1)) {
+            //instantiate popup window
+            LayoutInflater layoutInflater = (LayoutInflater) GuessActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View customView = layoutInflater.inflate(R.layout.finish_pop_up,null);
+            final PopupWindow popupWindow = new PopupWindow(customView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            //display the popup window
+            popupWindow.showAtLocation(findViewById(R.id.fullscreen_content_controls), Gravity.CENTER, 0, 0);
+            TextView wins = findViewById(R.id.winsDetails);
+            wins.setText(TeamService.getWinsInfo());
+            Button newGameButton = findViewById(R.id.newGameButton);
+            newGameButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(null, NewGameActivity.class);
+                    finish();  //Kill the activity from which you will go to next activity
+                    startActivity(i);
+                }
+            });
+
+            Button continueGameButton = findViewById(R.id.continueGameButton);
+            continueGameButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popupWindow.dismiss();
+                    Team team = TeamService.getCurrentTeam();
+                    resetTextFields(team);
+                }
+            });
+
+            Button menuButton = findViewById(R.id.menuButton);
+            menuButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(null, MenuActivity.class);
+                    finish();  //Kill the activity from which you will go to next activity
+                    startActivity(i);
+                }
+            });
+
+            //close the popup window on button click
+
+        } else {
+            Team next = TeamService.getNextTeam(currentIndex);
+            currentIndex = next.getId();
+            resetTextFields(next);
+        }
+
+    }
+
+    public void onFailed(View view) {
+    }
+
+    public void showResults(View view) {
     }
 }

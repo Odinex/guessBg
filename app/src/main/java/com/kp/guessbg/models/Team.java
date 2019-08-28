@@ -30,10 +30,8 @@ public class Team {
         this.points = Integer.parseInt(teamToString.substring(
                 startPoints, endPoints));
         int beginWins = teamToString.indexOf(endPoints + 7);
-        int endWins = teamToString.indexOf(",", beginWins);
+        int endWins = teamToString.indexOf("}", beginWins);
         this.wins = Integer.parseInt(teamToString.substring(beginWins, endWins));
-        int beginLosses = endWins + 9;
-        int endLosses = teamToString.indexOf("}", beginLosses);
 
     }
 
@@ -89,5 +87,13 @@ public class Team {
 
     public void setHisTurn(boolean isHisTurn) {
         this.isHisTurn = isHisTurn;
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public void addWin() {
+        this.wins++;
     }
 }

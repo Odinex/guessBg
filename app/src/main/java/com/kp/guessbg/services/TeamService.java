@@ -19,39 +19,24 @@ import java.util.List;
  */
 
 public class TeamService {
+    private static final int MAX_POINTS = 10;
     private static List<Team> currentTeams = new ArrayList<>();
 
-    public TeamService() {
 
-    }
-
-    public List<Team> getCurrentTeams() {
+    public static List<Team> getCurrentTeams() {
         return currentTeams;
     }
 
-    public int getCountOfTeams() {
-        return currentTeams.size();
-    }
-    public void setAsCurrentGuesser(int index) {
+    public static  void setAsCurrentGuesser(int index) {
         Team team = currentTeams.get(index);
         team.setIsHisTurn(true);
     }
 
-    public void updatePoints(int index, int points) {
-        Team team = currentTeams.get(index);
-        team.setPoints(team.getPoints()+points);
-    }
-
-    public void addWin(int index) {
-        Team team = currentTeams.get(index);
-        team.setWins(team.getWins()+1);
-    }
-
-    public void addTeam(Team team) {
+    public static void addTeam(Team team) {
         currentTeams.add(team);
     }
 
-    public void saveTeamsToFile(Context context) {
+    public static void saveTeamsToFile(Context context) {
         if (!currentTeams.isEmpty()) {
             try {
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("teams.txt", Context.MODE_PRIVATE));
@@ -65,8 +50,23 @@ public class TeamService {
         }
     }
 
-    public void loadTeams(Context context) {
-        String ret = "";
+    public static String getWinsInfo() {
+        StringBuilder info = new StringBuilder();
+        for(Team team : currentTeams) {
+            info.append(team.getName()).append('\t').append(team.getWins()).append('\n');
+        }
+        return info.toString();
+    }
+
+    public static String getPointsInfo() {
+        StringBuilder info = new StringBuilder();
+        for(Team team : currentTeams) {
+            info.append(team.getName()).append('\t').append(team.getPoints()).append('\n');
+        }
+        return info.toString();
+    }
+
+    public static void loadTeams(Context context) {
 
         try {
             InputStream inputStream = context.openFileInput("teams.txt");
@@ -89,5 +89,46 @@ public class TeamService {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
+    }
+
+    public static boolean hasWon(int currentIndex, int points) {
+
+        Team team = currentTeams.get(currentIndex);
+        team.addPoints(points);
+        boolean hasWon = team.getPoints() >= MAX_POINTS;
+        if(hasWon) {
+            team.addWin();
+            for(Team team1 : currentTeams) {
+                team1.setPoints(0);
+                team1.setIsHisTurn(false);
+            }
+            currentTeams.get(0).setIsHisTurn(true);
+        }
+        return hasWon;
+    }
+
+    public static Team getCurrentTeam() {
+
+        for(Team team : currentTeams) {
+            if(team.isHisTurn()) {
+                return team;
+            }
+        }
+        Team team = currentTeams.get(0);
+        team.setIsHisTurn(true);
+        return team;
+    }
+
+    public static Team getNextTeam(int currentIndex) {
+        currentTeams.get(currentIndex).setIsHisTurn(false);
+        Team team;
+        currentIndex++;
+        if(currentIndex < currentTeams.size()) {
+            team = currentTeams.get(currentIndex);
+        } else {
+            team = currentTeams.get(0);
+        }
+        team.setIsHisTurn(true);
+        return team;
     }
 }

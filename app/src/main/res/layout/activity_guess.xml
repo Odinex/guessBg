@@ -32,9 +32,30 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:background="@color/black_overlay"
             android:orientation="vertical"
             tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:id="@+id/resultsLayout"
+                style="?metaButtonBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="25dp"
+                android:gravity="start"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+                <Button
+                    android:id="@+id/showResultsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="showResults"
+                    android:text="Резултати"
+                    tools:ignore="HardcodedText" />
+
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/teamDetails"
@@ -42,14 +63,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textSize="30sp"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/showHideWords"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="startTimerAndHideWord"
-                android:text="Покажи"/>
+                android:text="Покажи"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/word"
@@ -58,26 +80,61 @@
                 android:layout_marginTop="16dp"
                 android:text="Transitions are awesome!"
                 android:textSize="30sp"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/startStopTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="startStopTimer"
-                android:text="Начало"/>
+                android:text="Начало"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/timerTextField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="30sp"
                 android:text="Оставащо време: 60"
-                android:visibility="visible"/>
+                android:textSize="30sp"
+                android:visibility="visible"
+                tools:ignore="HardcodedText" />
+
+            <LinearLayout
+                android:id="@+id/currentResultLayout"
+                style="?metaButtonBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:gravity="end"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+                <Button
+                    android:id="@+id/failedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="onFailed"
+                    android:text="Не позна"
+                    tools:ignore="HardcodedText"
+                    android:layout_marginRight="16dp" />
+
+                <Button
+                    android:id="@+id/guessedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onGuessed"
+                    android:text="Позна"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/bottom_layout"
             style="?metaButtonBarStyle"
@@ -86,17 +143,18 @@
             android:layout_gravity="bottom|start"
             android:orientation="vertical"
             tools:ignore="UselessParent">
+
             <ImageButton
                 android:id="@+id/expand"
                 style="?android:button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/expand"
                 android:onClick="expand"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="10dp"
-                tools:ignore="RtlHardcoded"
-                android:layout_marginRight="10dp"/>
+                tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
     </FrameLayout>

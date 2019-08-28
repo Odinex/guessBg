@@ -31,7 +31,6 @@ public class NewGameActivity extends AppCompatActivity {
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
     private static final boolean AUTO_HIDE = true;
-    private TeamService teamService;
 
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
@@ -108,7 +107,7 @@ public class NewGameActivity extends AppCompatActivity {
         expand.setVisibility(View.INVISIBLE);
 
         mContentView = findViewById(R.id.fullscreen_content);
-        teamService = new TeamService();
+
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
@@ -228,7 +227,7 @@ public class NewGameActivity extends AppCompatActivity {
             if(v instanceof EditText) {
                 EditText editText = (EditText) v;
                 Team team = new Team(i,editText.getText().toString());
-                teamService.addTeam(team);
+                TeamService.addTeam(team);
             }
         }
         Intent in=new Intent(NewGameActivity.this,GuessActivity.class);
