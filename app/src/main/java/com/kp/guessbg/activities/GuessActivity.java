@@ -52,22 +52,13 @@ public class GuessActivity extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
     public static final long MINUTE = 60000L;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
         public void run() {
             // Delayed removal of status and navigation bar
 
-            // Note that some of these constants are new as of API 16 (Jelly Bean)
-            // and API 19 (KitKat). It is safe to use them, as they are inlined
-            // at compile-time and do nothing on earlier devices.
-            mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
         }
     };
     private final Runnable mShowPart2Runnable = new Runnable() {
@@ -142,19 +133,7 @@ public class GuessActivity extends AppCompatActivity {
             }
 
         };
-
-        mContentView = findViewById(R.id.fullscreen_content);
-
-
-        // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
-            }
-        });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
+    // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
     }
@@ -221,9 +200,6 @@ public class GuessActivity extends AppCompatActivity {
 
     @SuppressLint("InlinedApi")
     private void show() {
-        // Show the system bar
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         mVisible = true;
 
         // Schedule a runnable to display UI elements after a delay
@@ -255,11 +231,7 @@ public class GuessActivity extends AppCompatActivity {
         boolean visible = word.getVisibility() == View.VISIBLE;
         Button button = (Button) view;
         visible = !visible;
-        if(visible) {
-            button.setText("Покажи");
-        } else {
-            button.setText("Скрий");
-        }
+        button.setText(visible ? "Скрий" : "Покажи");
         word.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -318,6 +290,13 @@ public class GuessActivity extends AppCompatActivity {
 
     public void showResults(View view) {
         Intent in=new Intent(GuessActivity.this,ResultsActivity.class);
+        finish();
+        startActivity(in);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent in=new Intent(GuessActivity.this,MenuActivity.class);
         finish();
         startActivity(in);
     }

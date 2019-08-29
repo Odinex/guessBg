@@ -5,6 +5,7 @@
     android:background="#CDFCD5"
     tools:context="com.kp.guessbg.activities.MenuActivity">
 
+
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->

@@ -1,11 +1,14 @@
 package com.kp.guessbg.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -171,24 +174,66 @@ public class MenuActivity extends AppCompatActivity {
 
     public void startNewGameActivity(View view) {
         Intent in=new Intent(MenuActivity.this,NewGameActivity.class);
+        finish();
         startActivity(in);
     }
 
     public void startContinueGameActivity(View view) {
+        TeamService.loadTeams(this);
         Intent in=new Intent(MenuActivity.this,ResultsActivity.class);
+        finish();
         startActivity(in);
     }
 
     public void startHelpAndRulesActivity(View view) {
         Intent in=new Intent(MenuActivity.this,HelpAndRulesActivity.class);
+        finish();
         startActivity(in);
     }
 
     public void startSettingsActivity(View view) {
         Intent in=new Intent(MenuActivity.this,SettingsActivity.class);
+        finish();
         startActivity(in);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(TeamService.getCurrentTeams().isEmpty()) {
+            finish();
+            return;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle("Затваряне")
+                .setMessage("Сигурни ли сте, че искате да затворите приложението?")
+                .setNeutralButton("Запази отборите и резултата.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        TeamService.saveTeamsToFile(MenuActivity.this);
+                        new AlertDialog.Builder(MenuActivity.this)
+                                .setMessage("Резултатът е запазен успешно. Искате да затворите приложението?")
+                                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                       dialogInterface.dismiss();
+                                       finish();
+                                       finish();
+
+                                    }
+                                }).setNegativeButton("Не", null).show();
+                    }
+                })
+                .setPositiveButton("Да", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("Не", null)
+                .show();
+    }
     public void expand(View view) {
         hide();
     }

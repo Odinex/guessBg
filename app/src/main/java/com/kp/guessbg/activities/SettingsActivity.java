@@ -1,6 +1,7 @@
 package com.kp.guessbg.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -101,13 +102,15 @@ public class SettingsActivity extends AppCompatActivity {
                 toggle();
             }
         });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        Intent in=new Intent(SettingsActivity.this,MenuActivity.class);
+        finish();
+        startActivity(in);
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

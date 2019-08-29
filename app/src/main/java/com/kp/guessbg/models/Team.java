@@ -29,7 +29,7 @@ public class Team {
         int endPoints = teamToString.indexOf(",", startPoints);
         this.points = Integer.parseInt(teamToString.substring(
                 startPoints, endPoints));
-        int beginWins = teamToString.indexOf(endPoints + 7);
+        int beginWins =endPoints + 7;
         int endWins = teamToString.indexOf("}", beginWins);
         this.wins = Integer.parseInt(teamToString.substring(beginWins, endWins));
 

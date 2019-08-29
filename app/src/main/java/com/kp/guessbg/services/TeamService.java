@@ -41,7 +41,10 @@ public class TeamService {
             try {
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("teams.txt", Context.MODE_PRIVATE));
 
-                for (Team team : currentTeams) outputStreamWriter.write(team.toString());
+                for (Team team : currentTeams) {
+                    outputStreamWriter.write(team.toString());
+                    outputStreamWriter.write('\n');
+                }
 
                 outputStreamWriter.close();
             } catch (IOException e) {
@@ -79,6 +82,7 @@ public class TeamService {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String receiveString;
+                TeamService.clearTeams();
 
                 while ( (receiveString = bufferedReader.readLine()) != null ) {
                     Team team = new Team(receiveString);

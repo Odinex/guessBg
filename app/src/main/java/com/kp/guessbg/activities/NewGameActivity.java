@@ -234,6 +234,14 @@ public class NewGameActivity extends AppCompatActivity {
             }
         }
         Intent in=new Intent(NewGameActivity.this,GuessActivity.class);
+        finish();
+        startActivity(in);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent in=new Intent(NewGameActivity.this,MenuActivity.class);
+        finish();
         startActivity(in);
     }
 
