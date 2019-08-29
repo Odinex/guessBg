@@ -52,16 +52,20 @@ public class TeamService {
 
     public static String getWinsInfo() {
         StringBuilder info = new StringBuilder();
+        info.append("Победи:\n");
         for(Team team : currentTeams) {
-            info.append(team.getName()).append('\t').append(team.getWins()).append('\n');
+            info.append(team.getName()).append(":")
+                    .append('\t').append(team.getWins()).append('\n');
         }
         return info.toString();
     }
 
     public static String getPointsInfo() {
         StringBuilder info = new StringBuilder();
+        info.append("Точки:\n");
         for(Team team : currentTeams) {
-            info.append(team.getName()).append('\t').append(team.getPoints()).append('\n');
+            info.append(team.getName()).append(":")
+                    .append('\t').append(team.getPoints()).append('\n');
         }
         return info.toString();
     }
@@ -120,7 +124,8 @@ public class TeamService {
     }
 
     public static Team getNextTeam(int currentIndex) {
-        currentTeams.get(currentIndex).setIsHisTurn(false);
+        Team team1 = currentTeams.get(currentIndex);
+        team1.setIsHisTurn(false);
         Team team;
         currentIndex++;
         if(currentIndex < currentTeams.size()) {
@@ -130,5 +135,9 @@ public class TeamService {
         }
         team.setIsHisTurn(true);
         return team;
+    }
+
+    public static void clearTeams() {
+        currentTeams.clear();
     }
 }

@@ -161,7 +161,7 @@ public class GuessActivity extends AppCompatActivity {
 
     private void resetTextFields(Team team) {
         TextView teamDetails = findViewById(R.id.teamDetails);
-        teamDetails.setText(String.format("Oтбор: \"%s\", №%d е на ред.", team.getName(), team.getId()));
+        teamDetails.setText(String.format("Oтбор: \"%s\", №%d е на ред.", team.getName(), team.getId()+1));
 
         currentGuess = guessService.getRandomGuess();
         TextView guess = findViewById(R.id.word);
@@ -298,45 +298,12 @@ public class GuessActivity extends AppCompatActivity {
 
         if(TeamService.hasWon(currentIndex, 1)) {
             //instantiate popup window
-            LayoutInflater layoutInflater = (LayoutInflater) GuessActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View customView = layoutInflater.inflate(R.layout.finish_pop_up,null);
-            final PopupWindow popupWindow = new PopupWindow(customView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            Intent in=new Intent(GuessActivity.this,ResultsActivity.class);
+            finish();
+            startActivity(in);
 
             //display the popup window
-            popupWindow.showAtLocation(findViewById(R.id.fullscreen_content_controls), Gravity.CENTER, 0, 0);
-            TextView wins = findViewById(R.id.winsDetails);
-            wins.setText(TeamService.getWinsInfo());
-            Button newGameButton = findViewById(R.id.newGameButton);
-            newGameButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(null, NewGameActivity.class);
-                    finish();  //Kill the activity from which you will go to next activity
-                    startActivity(i);
-                }
-            });
 
-            Button continueGameButton = findViewById(R.id.continueGameButton);
-            continueGameButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    popupWindow.dismiss();
-                    Team team = TeamService.getCurrentTeam();
-                    resetTextFields(team);
-                }
-            });
-
-            Button menuButton = findViewById(R.id.menuButton);
-            menuButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(null, MenuActivity.class);
-                    finish();  //Kill the activity from which you will go to next activity
-                    startActivity(i);
-                }
-            });
-
-            //close the popup window on button click
 
         } else {
             Team next = TeamService.getNextTeam(currentIndex);
@@ -350,5 +317,8 @@ public class GuessActivity extends AppCompatActivity {
     }
 
     public void showResults(View view) {
+        Intent in=new Intent(GuessActivity.this,ResultsActivity.class);
+        finish();
+        startActivity(in);
     }
 }

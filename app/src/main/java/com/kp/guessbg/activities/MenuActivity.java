@@ -9,8 +9,10 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.kp.guessbg.R;
+import com.kp.guessbg.services.TeamService;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -173,7 +175,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void startContinueGameActivity(View view) {
-        Intent in=new Intent(MenuActivity.this,ContinueGameActivity.class);
+        Intent in=new Intent(MenuActivity.this,ResultsActivity.class);
         startActivity(in);
     }
 

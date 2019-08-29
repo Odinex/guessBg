@@ -26,7 +26,7 @@
             android:label="@string/title_activity_new_game"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".activities.ContinueGameActivity"
+            android:name=".activities.ResultsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_continue_game"
             android:theme="@style/FullscreenTheme" />

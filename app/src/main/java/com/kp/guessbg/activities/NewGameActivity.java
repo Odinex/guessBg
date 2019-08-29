@@ -220,14 +220,17 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void startGameActivity(View view) {
+        TeamService.clearTeams();
         LinearLayout dynamic = findViewById(R.id.dynamic_input_fields);
         final int childCount = dynamic.getChildCount();
+        int teamId = 0;
         for (int i = 0; i < childCount; i++) {
             View v = dynamic.getChildAt(i);
             if(v instanceof EditText) {
                 EditText editText = (EditText) v;
-                Team team = new Team(i,editText.getText().toString());
+                Team team = new Team(teamId,editText.getText().toString());
                 TeamService.addTeam(team);
+                teamId++;
             }
         }
         Intent in=new Intent(NewGameActivity.this,GuessActivity.class);

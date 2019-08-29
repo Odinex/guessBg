@@ -1,6 +1,7 @@
 package com.kp.guessbg.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,14 +9,16 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.kp.guessbg.R;
+import com.kp.guessbg.services.TeamService;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class ContinueGameActivity extends AppCompatActivity {
+public class ResultsActivity extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -88,11 +91,15 @@ public class ContinueGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_continue_game);
+        setContentView(R.layout.activity_results);
 
         mVisible = true;
 
         mContentView = findViewById(R.id.fullscreen_content);
+        TextView wins = findViewById(R.id.winsDetails);
+        wins.setText(TeamService.getWinsInfo());
+        TextView points = findViewById(R.id.pointsDetails);
+        points.setText(TeamService.getPointsInfo());
 
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -102,11 +109,6 @@ public class ContinueGameActivity extends AppCompatActivity {
                 toggle();
             }
         });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override
@@ -169,4 +171,21 @@ public class ContinueGameActivity extends AppCompatActivity {
         hide();
     }
 
+    public void startNewGameResults(View view) {
+        Intent in=new Intent(ResultsActivity.this,NewGameActivity.class);
+        finish();
+        startActivity(in);
+    }
+
+    public void continueGame(View view) {
+        Intent in=new Intent(ResultsActivity.this,GuessActivity.class);
+        finish();
+        startActivity(in);
+    }
+
+    public void startMenu(View view) {
+        Intent in=new Intent(ResultsActivity.this,MenuActivity.class);
+        finish();
+        startActivity(in);
+    }
 }
