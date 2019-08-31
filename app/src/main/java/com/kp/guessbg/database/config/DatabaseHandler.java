@@ -20,15 +20,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_WORD = "word";
     private static final String KEY_ACTIVITY = "activity";
     private static final String KEY_COUNT_OF_USAGES = "countOfUsages";
+    private static Guess previousGuess = null;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        onCreate(this.getWritableDatabase());
         //3rd argument to be passed is CursorFactory instance
     }
 
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GUESSES);
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_GUESSES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_WORD + " TEXT,"
                 + KEY_COUNT_OF_USAGES + " INTEGER," +  KEY_ACTIVITY + " INTEGER)";
@@ -46,7 +49,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // code to add the new contact
-    public void addContact(GuessDto guessDto) {
+    public void addGuess(GuessDto guessDto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -63,9 +66,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // code to get the single contact
     public Guess getRandomGuess() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + KEY_ID + "," + KEY_WORD + "," + KEY_COUNT_OF_USAGES + " FROM " + TABLE_GUESSES + " WHERE id = (SELECT " + KEY_ID + " FROM "
-                + TABLE_GUESSES + " WHERE " + KEY_COUNT_OF_USAGES + " = (SELECT MIN(countOfUsages) " +
-                "FROM " + TABLE_GUESSES + ") ORDER BY RANDOM () LIMIT 1)", null);
+        Cursor cursor = db.rawQuery("SELECT " + KEY_ID + "," + KEY_WORD + ","  + KEY_ACTIVITY
+                + ","+ KEY_COUNT_OF_USAGES + " FROM " + TABLE_GUESSES + " WHERE id = (SELECT " + KEY_ID + " FROM "
+                + TABLE_GUESSES + " ORDER BY RANDOM () LIMIT 1)", null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -73,11 +76,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Guess guess = null;
         if (cursor != null) {
             guess = new Guess(Integer.parseInt(cursor.getString(0)),
-                    cursor.getString(1), Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(2)));
+                    cursor.getString(1), Integer.parseInt(cursor.getString(2)),
+                    Integer.parseInt(cursor.getString(3)));
             guess.setCountOfUsages(guess.getCountOfUsages()+1);
             updateContact(guess);
+            if(previousGuess != null && guess.getId().equals(previousGuess.getId())){
+                return getRandomGuess();
+            } else {
+                previousGuess = guess;
+            }
         }
-        // return guess
         return guess;
     }
 

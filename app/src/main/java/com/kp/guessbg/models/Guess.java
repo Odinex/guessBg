@@ -10,7 +10,7 @@ public class Guess {
     private Integer activity;
     private Integer countOfUsages;
 
-    public Guess(int i, String string, Integer activity, int countOfUsages) {
+    public Guess(int i, String string, int activity, int countOfUsages) {
         this.id = i;
         this.word = string;
         this.activity = activity;

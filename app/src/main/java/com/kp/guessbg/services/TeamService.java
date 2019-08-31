@@ -130,6 +130,7 @@ public class TeamService {
     public static Team getNextTeam(int currentIndex) {
         Team team1 = currentTeams.get(currentIndex);
         team1.setIsHisTurn(false);
+        currentTeams.set(currentIndex,team1);
         Team team;
         currentIndex++;
         if(currentIndex < currentTeams.size()) {

@@ -17,7 +17,7 @@ public class GuessService {
     public GuessService(Context context) {
         this.databaseHandler = new DatabaseHandler(context);
         for(GuessDto guessDto : Constants.GUESS_DTOS) {
-            databaseHandler.addContact(guessDto);
+            databaseHandler.addGuess(guessDto);
         }
     }
 

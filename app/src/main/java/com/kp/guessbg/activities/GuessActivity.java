@@ -3,6 +3,7 @@ package com.kp.guessbg.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
@@ -93,7 +94,6 @@ public class GuessActivity extends AppCompatActivity {
         }
     };
     private GuessService guessService;
-    private Guess currentGuess;
     private CountDownTimer countDownTimer;
     public long millisLeft = MINUTE;
     private boolean isPaused = true;
@@ -112,7 +112,7 @@ public class GuessActivity extends AppCompatActivity {
         expand.setVisibility(View.INVISIBLE);
         guessService = new GuessService(this);
         Team team = TeamService.getCurrentTeam();
-
+        currentIndex = team.getId();
         resetTextFields(team);
 
         countDownTimer = new CountDownTimer(60000, 1000) {
@@ -122,14 +122,38 @@ public class GuessActivity extends AppCompatActivity {
             @SuppressLint("DefaultLocale")
             public void onTick(long millisUntilFinished) {
                 millisLeft = millisUntilFinished;
-                timerTextField.setText(String.format("Оставащо време: %d", millisUntilFinished / 1000));
-                //here you can have your logic to set text to edittext
+                long secondsLeft = millisUntilFinished / 1000;
+                timerTextField.setText(String.format("Оставащо време: %d", secondsLeft));
+                if(secondsLeft == 10) {
+                    new Runnable() {
+                        public void run() {
+                            playSound();
+                        }
+
+                        void playSound() {
+                            MediaPlayer mp = MediaPlayer.create(getBaseContext(), R.raw.whistle);
+                            mp.start();
+                        }
+
+                    }.run();
+                }
             }
 
             public void onFinish() {
                 Button startStopTimer = findViewById(R.id.startStopTimer);
                 startStopTimer.setVisibility(View.INVISIBLE);
                 timerTextField.setText("Спри!");
+                new Runnable() {
+                    public void run() {
+                        playSound();
+                    }
+
+                    void playSound() {
+                        MediaPlayer mp = MediaPlayer.create(getBaseContext(), R.raw.whistle);
+                        mp.start();
+                    }
+
+                }.run();
             }
 
         };
@@ -142,7 +166,7 @@ public class GuessActivity extends AppCompatActivity {
         TextView teamDetails = findViewById(R.id.teamDetails);
         teamDetails.setText(String.format("Oтбор: \"%s\", №%d е на ред.", team.getName(), team.getId()+1));
 
-        currentGuess = guessService.getRandomGuess();
+        Guess currentGuess = guessService.getRandomGuess();
         TextView guess = findViewById(R.id.word);
         String activity = getActivity(currentGuess.getActivity());
         String word = getWord(currentGuess.getWord());
@@ -237,26 +261,56 @@ public class GuessActivity extends AppCompatActivity {
 
     public void startStopTimer(View view) {
         if(isPaused) {
+            if(((Button) view).getText().equals("Начало")) {
+                Button guessed = findViewById(R.id.guessedButton);
+                guessed.setVisibility(View.VISIBLE);
+                Button failed = findViewById(R.id.failedButton);
+                failed.setVisibility(View.VISIBLE);
+            }
             if (MINUTE != millisLeft) {
                 countDownTimer = new CountDownTimer(millisLeft, 1000) {
                     @SuppressLint("DefaultLocale")
                     public void onTick(long millisUntilFinished) {
                         millisLeft = millisUntilFinished;
-                        timerTextField.setText(String.format("Оставащо време: %d", millisUntilFinished / 1000));
-                        //here you can have your logic to set text to edittext
+                        long secondsLeft = millisUntilFinished / 1000;
+                        timerTextField.setText(String.format("Оставащо време: %d", secondsLeft));
+                        if(secondsLeft == 10) {
+                            new Runnable() {
+                                public void run() {
+                                    playSound();
+                                }
+
+                                void playSound() {
+                                    MediaPlayer mp = MediaPlayer.create(getBaseContext(), R.raw.whistle);
+                                    mp.start();
+                                }
+
+                            }.run();
+                        }
                     }
 
                     public void onFinish() {
                         Button startStopTimer = findViewById(R.id.startStopTimer);
                         startStopTimer.setVisibility(View.INVISIBLE);
                         timerTextField.setText("Спри!");
+                        new Runnable() {
+                            public void run() {
+                                playSound();
+                            }
+
+                            void playSound() {
+                                MediaPlayer mp = MediaPlayer.create(getBaseContext(), R.raw.bell);
+                                mp.start();
+                            }
+
+                        }.run();
                     }
                 };
             }
             countDownTimer.start();
             isPaused = false;
             Button startStopTimer = findViewById(R.id.startStopTimer);
-            startStopTimer.setText("Спри");
+            startStopTimer.setText("Пауза");
         } else {
             Button startStopTimer = findViewById(R.id.startStopTimer);
             startStopTimer.setText("Продължи");
@@ -267,25 +321,24 @@ public class GuessActivity extends AppCompatActivity {
 
     public void onGuessed(View view) {
         // TODO complicate points and guess
-
+        Intent in;
         if(TeamService.hasWon(currentIndex, 1)) {
-            //instantiate popup window
-            Intent in=new Intent(GuessActivity.this,ResultsActivity.class);
-            finish();
-            startActivity(in);
-
-            //display the popup window
-
-
+            in=new Intent(GuessActivity.this,ResultsActivity.class);
         } else {
             Team next = TeamService.getNextTeam(currentIndex);
             currentIndex = next.getId();
-            resetTextFields(next);
+            in=new Intent(GuessActivity.this,GuessActivity.class);
         }
-
+        finish();
+        startActivity(in);
     }
 
     public void onFailed(View view) {
+        Team next = TeamService.getNextTeam(currentIndex);
+        currentIndex = next.getId();
+        Intent in=new Intent(GuessActivity.this,GuessActivity.class);
+        finish();
+        startActivity(in);
     }
 
     public void showResults(View view) {
