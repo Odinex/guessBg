@@ -18,8 +18,11 @@ public final class Constants {
             new GuessDto("Борене с яйца", GESTURE),new GuessDto("Борене с яйца", DRAW),
             new GuessDto("Бъдни вечер", DRAW),new GuessDto("Трифон Зарезан (или Ден на лозаря)" +
             "", DRAW),
-            new GuessDto("Гергьовден", GESTURE),new GuessDto("Еньовден", GESTURE),
-
-
+            new GuessDto("Тракия", SPEAK),new GuessDto("Могила", GESTURE),
+            new GuessDto("Могила", SPEAK),new GuessDto("Могила", DRAW),
+            new GuessDto("Хан", SPEAK),new GuessDto("Кирилица", DRAW),
+            new GuessDto("Прабългарин", SPEAK),new GuessDto("Златен век", SPEAK),
+            new GuessDto("Славянин", DRAW),new GuessDto("Шипка", DRAW),
+            new GuessDto("Хоро", DRAW),new GuessDto("Марица", DRAW),
     };
 }
