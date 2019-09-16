@@ -149,7 +149,7 @@ public class GuessActivity extends AppCompatActivity {
                     }
 
                     void playSound() {
-                        MediaPlayer mp = MediaPlayer.create(getBaseContext(), R.raw.whistle);
+                        MediaPlayer mp = MediaPlayer.create(getBaseContext(), R.raw.bell);
                         mp.start();
                     }
 
