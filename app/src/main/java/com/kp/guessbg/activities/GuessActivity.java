@@ -329,6 +329,7 @@ public class GuessActivity extends AppCompatActivity {
             currentIndex = next.getId();
             in=new Intent(GuessActivity.this,GuessActivity.class);
         }
+        countDownTimer.cancel();
         finish();
         startActivity(in);
     }
@@ -337,12 +338,14 @@ public class GuessActivity extends AppCompatActivity {
         Team next = TeamService.getNextTeam(currentIndex);
         currentIndex = next.getId();
         Intent in=new Intent(GuessActivity.this,GuessActivity.class);
+        countDownTimer.cancel();
         finish();
         startActivity(in);
     }
 
     public void showResults(View view) {
         Intent in=new Intent(GuessActivity.this,ResultsActivity.class);
+        countDownTimer.cancel();
         finish();
         startActivity(in);
     }
@@ -350,6 +353,7 @@ public class GuessActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent in=new Intent(GuessActivity.this,MenuActivity.class);
+        countDownTimer.cancel();
         finish();
         startActivity(in);
     }
