@@ -173,33 +173,38 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void startNewGameActivity(View view) {
-        Intent in=new Intent(MenuActivity.this,NewGameActivity.class);
+        Intent in = new Intent(MenuActivity.this, NewGameActivity.class);
         finish();
         startActivity(in);
     }
 
     public void startContinueGameActivity(View view) {
         TeamService.loadTeams(this);
-        Intent in=new Intent(MenuActivity.this,ResultsActivity.class);
+        Intent in;
+        if (TeamService.getCurrentTeams() != null && TeamService.getCurrentTeams().size() > 1) {
+            in = new Intent(MenuActivity.this, GuessActivity.class);
+        } else {
+            in = new Intent(MenuActivity.this, NewGameActivity.class);
+        }
         finish();
         startActivity(in);
     }
 
     public void startHelpAndRulesActivity(View view) {
-        Intent in=new Intent(MenuActivity.this,HelpAndRulesActivity.class);
+        Intent in = new Intent(MenuActivity.this, HelpAndRulesActivity.class);
         finish();
         startActivity(in);
     }
 
     public void startSettingsActivity(View view) {
-        Intent in=new Intent(MenuActivity.this,SettingsActivity.class);
+        Intent in = new Intent(MenuActivity.this, SettingsActivity.class);
         finish();
         startActivity(in);
     }
 
     @Override
     public void onBackPressed() {
-        if(TeamService.getCurrentTeams().isEmpty()) {
+        if (TeamService.getCurrentTeams().isEmpty()) {
             finish();
             return;
         }
@@ -215,16 +220,15 @@ public class MenuActivity extends AppCompatActivity {
                                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                       dialogInterface.dismiss();
-                                       finish();
-                                       finish();
+                                        dialogInterface.dismiss();
+                                        finish();
+                                        finish();
 
                                     }
                                 }).setNegativeButton("Не", null).show();
                     }
                 })
-                .setPositiveButton("Да", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -234,6 +238,7 @@ public class MenuActivity extends AppCompatActivity {
                 .setNegativeButton("Не", null)
                 .show();
     }
+
     public void expand(View view) {
         hide();
     }
