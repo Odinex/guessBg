@@ -100,7 +100,6 @@ public class TeamService {
     }
 
     public static boolean hasWon(int currentIndex, int points) {
-
         Team team = currentTeams.get(currentIndex);
         team.addPoints(points);
         boolean hasWon = team.getPoints() >= MAX_POINTS;

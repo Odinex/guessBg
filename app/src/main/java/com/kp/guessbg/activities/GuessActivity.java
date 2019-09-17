@@ -116,9 +116,6 @@ public class GuessActivity extends AppCompatActivity {
         resetTextFields(team);
 
         countDownTimer = new CountDownTimer(60000, 1000) {
-
-
-
             @SuppressLint("DefaultLocale")
             public void onTick(long millisUntilFinished) {
                 millisLeft = millisUntilFinished;
@@ -157,9 +154,6 @@ public class GuessActivity extends AppCompatActivity {
             }
 
         };
-    // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
     }
 
     private void resetTextFields(Team team) {
@@ -246,7 +240,7 @@ public class GuessActivity extends AppCompatActivity {
         hide();
     }
 
-    public void startTimerAndHideWord(View view) {
+    public void showHideWord(View view) {
         final ViewGroup transitionsContainer = findViewById(R.id.fullscreen_content_controls);
         final TextView word = transitionsContainer.findViewById(R.id.word);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

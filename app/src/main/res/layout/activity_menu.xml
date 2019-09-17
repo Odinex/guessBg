@@ -68,17 +68,6 @@
                 android:textSize="20sp"
                 android:textColor="#004040"
                 android:onClick="startHelpAndRulesActivity"/>
-            <Button
-                android:id="@+id/settings"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/settings"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="#004040"
-                android:onClick="startSettingsActivity"/>
 
         </LinearLayout>
 
